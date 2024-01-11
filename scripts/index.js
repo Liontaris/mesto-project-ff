@@ -13,7 +13,7 @@ const cardsContainer = document.querySelector('.places__list');
 
 const setDeleteButton = function (parentCard) { parentCard.remove() };
 
-function createCard (cardTemplate, cardData) {
+function createCard (cardTemplate, cardData, buttonEvent) {
     const cardTemplateClone = cardTemplate.querySelector('.card').cloneNode(true);
     const deleteButton = cardTemplateClone.querySelector('.card__delete-button');
     const imageParameters = cardTemplateClone.querySelector('.card__image');
@@ -22,11 +22,11 @@ function createCard (cardTemplate, cardData) {
     imageParameters.alt = 'Видовое фото ' + cardData.name;
     cardTemplateClone.querySelector('.card__title').textContent = cardData.name;
     
-    deleteButton.addEventListener('click', () => setDeleteButton(cardTemplateClone));
+    deleteButton.addEventListener('click', () => buttonEvent(cardTemplateClone));
 
     return cardTemplateClone;
 };
 
 initialCards.forEach(function(item){
-    cardsContainer.append(createCard(cardTemplate, item)); //Всё-таки наверное append, а не prepend, иначе карточки выводятся в обратном порядке, не соответсвует макету.
+    cardsContainer.append(createCard(cardTemplate, item, setDeleteButton)); //Всё-таки наверное append, а не prepend, иначе карточки выводятся в обратном порядке, не соответсвует макету.
 });
