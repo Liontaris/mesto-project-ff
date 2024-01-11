@@ -9,24 +9,24 @@
 // @todo: Вывести карточки на страницу
 
 const cardTemplate = document.querySelector('#card-template').content;
-const cardTarget = document.querySelector('.places__list');
+const cardsContainer = document.querySelector('.places__list');
 
-const buttonFunction = function (deleteButtonID) {
-    deleteButtonID.addEventListener('click', function () {
-        const parentCard = deleteButtonID.closest('.card');
-        parentCard.remove();
-    });
-};
+const setDeleteButton = function (parentCard) { parentCard.remove() };
 
-function createCard (putCardTemplate, putCardTarget, putCardData, putButtonListener) {
-    const cardTemplateClone = putCardTemplate.querySelector('.card').cloneNode(true);
+function createCard (cardTemplate, cardData) {
+    const cardTemplateClone = cardTemplate.querySelector('.card').cloneNode(true);
     const deleteButton = cardTemplateClone.querySelector('.card__delete-button');
-    cardTemplateClone.querySelector('.card__image').src = putCardData.link;
-    cardTemplateClone.querySelector('.card__title').textContent = putCardData.name;
-    putCardTarget.append(cardTemplateClone);
-    putButtonListener(deleteButton);
+    const imageParameters = cardTemplateClone.querySelector('.card__image');
+
+    imageParameters.src = cardData.link;
+    imageParameters.alt = 'Видовое фото ' + cardData.name;
+    cardTemplateClone.querySelector('.card__title').textContent = cardData.name;
+    
+    deleteButton.addEventListener('click', () => setDeleteButton(cardTemplateClone));
+
+    return cardTemplateClone;
 };
 
 initialCards.forEach(function(item){
-    createCard(cardTemplate, cardTarget, item, buttonFunction);
+    cardsContainer.append(createCard(cardTemplate, item)); //Всё-таки наверное append, а не prepend, иначе карточки выводятся в обратном порядке, не соответсвует макету.
 });
